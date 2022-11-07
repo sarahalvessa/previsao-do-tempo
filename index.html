@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Sarah">
+    <meta name="description" content="Previsão do tempo">
+    <meta name="keywords" content="previsão, tecnologia">
+    <link rel="stylesheet" href="css/estilo.css">
+    <title>Previsão do Tempo</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="search">
+            <input type="text" id="input">
+            <img src="imagens/icons8-search-25.png" alt="" onclick="rodar()">
+        </div>
+
+        <p class="localtwo"></p>
+
+        <div class="img">
+            <img src="" alt="">
+        </div>
+
+        <p class="tempatual"></p>
+
+        <div class="temps">
+            <div class="tempmax">
+                <p></p>
+            </div>
+            <div class="tempmin">
+                <p></p>
+            </div>
+        </div>
+        <div class="localizacaoInvalida">
+            <p>Localização Inválida!</p>
+        </div>
+    </div>
+    <script>
+        // Armazenar o horario que o usuario está usando o site
+        let horario = new Date();
+        let horarioAtualizado = horario.getHours();
+
+        // Adicionar o background escuro se estiver de noite
+        if (horarioAtualizado >= 18 || horarioAtualizado >= 0 && horarioAtualizado < 6) {
+            document.querySelector(".container").style.background = "linear-gradient(90deg, rgba(8,36,79,1) 5%, rgba(11,66,171,1) 100%)";
+        };
+        // Adicionar o background claro se estiver de dia
+        if (horarioAtualizado >= 6 && horarioAtualizado < 18) {
+            document.querySelector(".container").style.background = "linear-gradient(90deg, rgba(41,178,221,1) 5%, rgba(45,200,234,1) 100%)";
+        };
+
+        function rodar() {
+            // Armazenar o valor do input
+            const input = document.getElementById("input").value;
+
+            // Fazer requisição
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${input}&units=metric&appid=a16cf4a00f5c3b9a0f27f024fab885a4`)
+                // Transformar o resultado em Json
+                .then(response => response.json())
+
+                // Pegar o Json
+                .then(function (response) {
+                    console.log(response);
+                    // Armazenar o query selector 
+                    let c = (e) => document.querySelector(e);
+
+                    // Armazenar a temperatura atual
+                    let tempatual = response.list[0].main.temp.toFixed(0);
+
+                    // Armazenar a temperatura máxima 
+                    let tempmin = response.list[0].main.temp_min.toFixed(0);
+
+                    // Armazenar a temperatura mínima
+                    let tempmax = response.list[0].main.temp_max.toFixed(0);
+
+                    // Pegar o texto do input e adicionar na tela
+                    c(".localtwo").innerHTML = response.city.name;
+
+                    // Limpar input 
+                    document.getElementById("input").value = '';
+
+                    // Adicionar display block nas temperaturas e local
+                    c(".tempatual").style.display = "block";
+                    c(".temps").style.display = "flex";
+                    c(".tempmin").style.display = "block";
+                    c(".tempmax").style.display = "block";
+                    c(".localtwo").style.display = "block";
+                    c(".localizacaoInvalida").style.display = "none";
+                    c(".img").style.marginTop = "10px";
+
+                    // Pegar temperatura atual e adicionar na tela com os graus Celsius
+                    c(".tempatual").innerHTML = tempatual + "°C";
+
+                    // Pegar a temperatura máxima e adicionar na tela com os Graus Celsius
+                    c(".tempmax").innerHTML = "Max: " + tempmax + "°C";
+
+                    // Pegar a temperatura mínima e adicionar na tela com os Graus Celsius
+                    c(".tempmin").innerHTML = "Min:" + tempmin + "°C";
+
+                    let img = document.querySelector(".img img");
+
+                    switch (response.list[0].weather[0].main) {
+                        case 'Clear':
+                            img.src = "imagens/clear.png";
+                            break;
+
+                        case 'Rain':
+                            img.src = "imagens/rain.png";
+                            break;
+
+                        case 'Snow':
+                            img.src = "imagens/snow.png";
+                            break;
+
+                        case 'Clouds':
+                            img.src = "imagens/cloud.png";
+                            break;
+
+                        case 'Haze':
+                            img.src = "imagens/mist.png";
+                            break;
+
+                        default:
+                            img.src = "";
+                            break;
+                    };
+                })
+                .catch((err) => {
+                    // Adicionar imagem de erro
+                    document.querySelector(".img img").src = "imagens/404.png";
+
+                    // Adicionar display block nas temperaturas e local
+                    document.querySelector(".tempatual").style.display = "none";
+                    document.querySelector(".tempmin").style.display = "none";
+                    document.querySelector(".temps").style.display = "none";
+                    document.querySelector(".tempmax").style.display = "none";
+                    document.querySelector(".localtwo").style.display = "none";
+                    document.querySelector(".localizacaoInvalida").style.display = "block";
+                    document.querySelector(".img").style.marginTop = "50px";
+                });
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,69 @@
+body {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+}
+body .container {
+  width: 280px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 40px;
+}
+body .container .search {
+  display: flex;
+  width: 170px;
+  margin-top: 30px;
+}
+body .container .search input {
+  border: 0;
+  border-bottom: 1px solid rgb(231, 231, 231);
+  outline: 0;
+  background-color: transparent;
+}
+body .container .search img {
+  position: absolute;
+  margin-left: 150px;
+  height: 20px;
+  cursor: pointer;
+}
+body .container .localtwo {
+  height: 20px;
+  font-size: 20px;
+  display: none;
+}
+body .container .img {
+  height: 40px;
+  margin-top: 50px;
+}
+body .container .img img {
+  height: 80px;
+}
+body .container .tempatual {
+  font-size: 28px;
+  margin-top: 40px;
+  font-weight: bold;
+  display: none;
+}
+body .container .temps {
+  display: none;
+  font-size: 16px;
+  margin-top: 0;
+}
+body .container .temps .tempmin {
+  margin-left: 10px;
+  display: none;
+}
+body .container .temps .tempmax {
+  display: none;
+}
+body .container .localizacaoInvalida {
+  display: none;
+  margin-top: 50px;
+}/*# sourceMappingURL=estilo.css.map */
